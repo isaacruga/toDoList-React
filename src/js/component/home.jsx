@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Task from "./task.jsx";
 
 //create your first component
 const Home = () => {
 	const [list, setList] = useState([]);
+	const [footer, setFooter] = useState("");
+
+	useEffect(() => {
+		if (list.length == 1) {
+			setFooter("tarea añadida");
+		} else {
+			setFooter("tareas añadidas");
+		}
+	}, [list.length]);
+
+	const deleteTask = index => {
+		let newArr = list.filter(i => i != index);
+		setList(newArr);
+	};
 
 	return (
 		<div className="d-flex justify-content-center flex-column">
@@ -24,9 +38,16 @@ const Home = () => {
 					aria-label="Sizing example input"
 					aria-describedby="inputGroup-sizing-lg"
 				/>
+
 				{list.map((item, index) => {
 					return <Task key={index} content={item} />;
+					<div onClick={() => deleteTask(i)}>X</div>;
 				})}
+			</div>
+
+			<div>
+				{" "}
+				{list.length} {footer}
 			</div>
 		</div>
 	);
